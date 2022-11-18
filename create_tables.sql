@@ -182,5 +182,152 @@ WITH (
     OIDS = FALSE
 );
 
+-- Create Relationship
+
+
+ALTER TABLE IF EXISTS public.customers
+    ADD CONSTRAINT fk_city FOREIGN KEY (customer_city)
+    REFERENCES public.city (city_cust) MATCH SIMPLE
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION;
+CREATE INDEX IF NOT EXISTS fki_fk_city
+    ON public.customers(customer_city);
+
+
+ALTER TABLE IF EXISTS public.customers
+    ADD CONSTRAINT fk_state_cd FOREIGN KEY (customer_state)
+    REFERENCES public.state_cd (state_cd) MATCH SIMPLE
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION;
+CREATE INDEX IF NOT EXISTS fki_fk_state_cd
+    ON public.customers(customer_state);
+
+
+ALTER TABLE IF EXISTS public.customers
+    ADD CONSTRAINT fk_zip_cd FOREIGN KEY (customer_zip_code_prefix)
+    REFERENCES public.zip_code (zip_code_prefix) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+CREATE INDEX IF NOT EXISTS fki_fk_zip_cd
+    ON public.customers(customer_zip_code_prefix);
+
+
+ALTER TABLE IF EXISTS public.geolocation
+    ADD CONSTRAINT fk_city FOREIGN KEY (geolocation_city)
+    REFERENCES public.city (city_cust) MATCH SIMPLE
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public.geolocation
+    ADD CONSTRAINT fk_state FOREIGN KEY (geolocation_state)
+    REFERENCES public.state_cd (state_cd) MATCH SIMPLE
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public.geolocation
+    ADD CONSTRAINT fk_zip_cd FOREIGN KEY (geolocation_zip_code_prefix)
+    REFERENCES public.zip_code (zip_code_prefix) MATCH SIMPLE
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public.order_items
+    ADD CONSTRAINT fk_orders FOREIGN KEY (order_id)
+    REFERENCES public.orders (order_id) MATCH SIMPLE
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION;
+CREATE INDEX IF NOT EXISTS fki_d
+    ON public.order_items(order_id);
+
+
+ALTER TABLE IF EXISTS public.order_items
+    ADD CONSTRAINT fk_prod FOREIGN KEY (product_id)
+    REFERENCES public.product (product_id) MATCH SIMPLE
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION;
+CREATE INDEX IF NOT EXISTS fki_fk_prod
+    ON public.order_items(product_id);
+
+
+ALTER TABLE IF EXISTS public.order_items
+    ADD CONSTRAINT fk_sellers FOREIGN KEY (seller_id)
+    REFERENCES public.sellers (seller_id) MATCH SIMPLE
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION;
+CREATE INDEX IF NOT EXISTS fki_fk_sellers
+    ON public.order_items(seller_id);
+
+
+ALTER TABLE IF EXISTS public.order_payments
+    ADD CONSTRAINT fk_orders FOREIGN KEY (order_id)
+    REFERENCES public.orders (order_id) MATCH SIMPLE
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION;
+CREATE INDEX IF NOT EXISTS fki_fk_orders
+    ON public.order_payments(order_id);
+
+
+ALTER TABLE IF EXISTS public.order_payments
+    ADD CONSTRAINT fk_payments FOREIGN KEY (payment_type)
+    REFERENCES public.payments (payment_type) MATCH SIMPLE
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION;
+CREATE INDEX IF NOT EXISTS fki_fk_payments
+    ON public.order_payments(payment_type);
+
+
+ALTER TABLE IF EXISTS public.order_reviews
+    ADD CONSTRAINT fk_orders FOREIGN KEY (order_id)
+    REFERENCES public.orders (order_id) MATCH SIMPLE
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public.order_reviews
+    ADD CONSTRAINT fk_reviews FOREIGN KEY (review_id)
+    REFERENCES public.reviews (review_id) MATCH SIMPLE
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION;
+CREATE INDEX IF NOT EXISTS fki_fk_reviews
+    ON public.order_reviews(review_id);
+
+
+ALTER TABLE IF EXISTS public.orders
+    ADD CONSTRAINT fk_customers FOREIGN KEY (customer_id)
+    REFERENCES public.customers (customer_id) MATCH SIMPLE
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION;
+CREATE INDEX IF NOT EXISTS fki_fk_customers
+    ON public.orders(customer_id);
+
+
+ALTER TABLE IF EXISTS public.sellers
+    ADD CONSTRAINT fk_city FOREIGN KEY (seller_city)
+    REFERENCES public.city (city_cust) MATCH SIMPLE
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public.sellers
+    ADD CONSTRAINT fk_state FOREIGN KEY (seller_state)
+    REFERENCES public.state_cd (state_cd) MATCH SIMPLE
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION;
+CREATE INDEX IF NOT EXISTS fki_fk_state
+    ON public.sellers(seller_state);
+
+
+ALTER TABLE IF EXISTS public.sellers
+    ADD CONSTRAINT fk_zip_cd FOREIGN KEY (seller_zip_code_prefix)
+    REFERENCES public.zip_code (zip_code_prefix) MATCH SIMPLE
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION;
+
+END;
+
+
+
 
 
